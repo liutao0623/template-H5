@@ -103,7 +103,7 @@
 }
 
 /* 文字超出n行隐藏 */
-.text-more-1 {
+.text-more {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -26,15 +26,87 @@
 			});
 			console.log($, '----------------  ----------------Tom');
 		}
-
 		function open_list() {
-			// $(".vta_listPopupWindow").show();
 			$(".vta_listPopupWindow").toggle();
 		}
-		function open_list_child() {
-			// $(".vta_listPopupWindow").show();
-			$(this).next('div').slideToggle();
+		function changeIcon(mainNode, clickNode) {
+			if (mainNode) {
+				if (mainNode.attr("src").indexOf("down_black.png") >= 0) {
+					mainNode.attr("src", "./img/up_blue.png");
+					clickNode.addClass('list_item_active');
+				} else {
+					mainNode.attr("src", "./img/down_black.png");
+					clickNode.removeClass('list_item_active');
+				}
+			}
 		}
+		// 弹出来点击事件
+		$(function () {
+			$('.list_item').click(function () {
+				// 	// 清除所有效果
+				// $(".list_child").hide()
+				// $(".list_item img").attr("src", "./img/down_black.png");
+				// $(".list_item").removeClass('list_item_active')
+				$(this).next('div').slideToggle();
+				// 更换图标添加类别
+				changeIcon($(this).children('img'), $(this));
+			});
+		});
+		// 底部
+		$(function () {
+			$('.atBottomThe_item').click(function () {
+				var array = $(".atBottomThe_item") // 主元素
+				var array_child = $(".atBottomThe_child")//子元素
+				for (let index = 0; index < array.length; index++) {
+					const element = array[index];
+					if ($(this).attr('data-index') == index) {
+						$(array_child[index]).show()
+						$(element).find('img').attr("src", "./img/up_blue.png");
+						$(element).addClass('list_item_active')
+						// $(this).next('div').slideToggle();
+						// changeIcon($(this).children('img'), $(this));
+					} else {
+						$(array_child[index]).hide()
+						$(element).removeClass('list_item_active')
+						$(element).find('img').attr("src", "./img/down_black.png");
+					}
+				}
+			});
+		});
+		//新闻 tab切换事件
+		$(function () {
+			$('#newsInformation_tabs a').click(function (e) {
+				e.preventDefault();
+				$('#newsInformation_tabs li').removeClass("swich_btn_item_active");
+				$("#newsInformation_content div").removeClass("newsInformation_show");
+				$(this).parent().addClass("swich_btn_item_active");
+				$('#' + $(this).attr('title')).addClass('newsInformation_show');
+			})
+		});
+		//版本 tab切换事件
+		$(function () {
+			$('#version_tabs a').click(function (e) {
+				e.preventDefault();
+				$('#version_tabs li').removeClass("swich_btn_item_active");
+				$("#version_content div").removeClass("version_show");
+				$(this).parent().addClass("swich_btn_item_active");
+				$('#' + $(this).attr('title')).addClass('version_show');
+			})
+		});
+		// 客服弹窗
+		$(function () {
+			$('.vta_kefu ').click(function () {
+				$('.vta_kefu_popup').show();
+				$('.popup_addLayerMask').show();
+			});
+		});
+		$(function () {
+			$('.shutDownPopup ').click(function () {
+				$('.vta_kefu_popup').hide();
+				$('.popup_addLayerMask').hide();
+
+			});
+		});
 	</script>
 	<style>
 		body {
@@ -59,22 +131,48 @@
 
 		/* 列表弹窗 */
 		.vta_listPopupWindow {
-			display: none;
 			position: fixed;
 			top: 0;
 			width: 7.5rem;
 			background: #FFFFFF;
 			font-size: .3rem;
 			z-index: 999;
+			display: none;
+		}
+
+		.listPopupWindow_buttonGroup {
+			text-align: center;
+			font-size: .3;
+			font-family: PingFang SC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #FFFFFF;
+		}
+
+		.listPopupWindow_buttonGroup div:nth-child(1) {
+			margin-top: 5rem;
+			width: 6.72rem;
+			height: .84rem;
+			line-height: .84rem;
+			background: #2765F6;
+			border-radius: 4px 4px 4px 4px;
+			border: 2px solid #2765F6;
+			opacity: 1;
+		}
+
+		.listPopupWindow_buttonGroup div:nth-child(2) {
+			width: 6.72rem;
+			height: .84rem;
+			line-height: .84rem;
+			border-radius: 4px 4px 4px 4px;
+			opacity: 1;
+			border: 2px solid #2765F6;
+			color: #2765F6;
+			margin: .4rem auto .6rem;
 		}
 
 		.list_item {
 			padding: .3rem .4rem;
 
-		}
-
-		.list_item_active {
-			color: #2765F6;
 		}
 
 		.list_child {
@@ -85,7 +183,7 @@
 		.list_child a {
 			padding: .2rem .6rem;
 			color: #333333;
-
+			display: block;
 		}
 
 		.list_item img {
@@ -93,6 +191,7 @@
 			height: .24rem;
 		}
 
+		/* 页面1 2级标题 */
 		.vta_columnTitle {
 			font-size: .36rem;
 			font-family: PingFang SC-Medium, PingFang SC;
@@ -114,7 +213,7 @@
 		.vta_top {
 			width: 7.5rem;
 			height: 13.34rem;
-			background: url(./img/vta_top_bg.png);
+			background: url(./img/top_bootm.png) center bottom no-repeat, url(./img/vta_top_bg.png) top center no-repeat;
 			background-size: contain;
 			background-repeat: no-repeat;
 			overflow: hidden;
@@ -327,6 +426,7 @@
 		.industryProblems_title img {
 			width: .48rem;
 			height: .48rem;
+			margin-right: 0.1rem;
 		}
 
 		.industryProblems_tips_list {
@@ -341,6 +441,7 @@
 			text-align: left;
 		}
 
+		/* <!-- 版本对比 --> */
 		.vta_versionTheRightsInterestsContrast_box {
 			text-align: center;
 			padding-top: .4rem;
@@ -349,6 +450,10 @@
 
 		.switch_btn {
 			padding: 0 .5rem;
+		}
+
+		.switch_btn a {
+			color: inherit;
 		}
 
 		.swich_btn_item {
@@ -371,6 +476,17 @@
 			margin: 0.5rem auto;
 			background: #FFFFFF;
 			padding-bottom: 0.3rem;
+			border-radius: 10px;
+			overflow: hidden;
+			display: none;
+		}
+
+		.version_show {
+			display: block;
+		}
+
+		.version_color_no {
+			color: #E3E6EB;
 		}
 
 		.versionTheRightsInterestsContrast_top {
@@ -378,7 +494,18 @@
 			width: 6.72rem;
 			height: 1.20rem;
 			opacity: 1;
-			background: url(./img/versionTheRightsInterestsContrast_top.png) #B9C5DA;
+		}
+
+		.version_bg1 {
+			background: url(./img/version_top1.png);
+		}
+
+		.version_bg2 {
+			background: url(./img/version_top2.png);
+		}
+
+		.version_bg3 {
+			background: url(./img/version_top3.png);
 		}
 
 		.vrc_tip text:nth-child(1) {
@@ -429,6 +556,21 @@
 			opacity: 1;
 		}
 
+		.installThe_v1 {
+			color: white;
+			background: #8895B1;
+		}
+
+		.installThe_v2 {
+			color: #FFFFFF;
+			background: #2765F6;
+		}
+
+		.installThe_v3 {
+			color: white;
+			background: #F2B643;
+		}
+
 		/* 案例 */
 		.vta_case_box {
 			width: 7.50rem;
@@ -442,14 +584,15 @@
 
 		.case_right div:nth-child(1) {
 			font-size: .3rem;
-			line-height: .3rem;
+			text-align: right;
+			line-height: .4rem;
 			color: #333333;
 			font-weight: 600;
 		}
 
 		.case_right div:nth-child(2) {
 			font-size: .24rem;
-			line-height: .4rem;
+			line-height: .6rem;
 			color: #999FAA;
 			font-weight: 400;
 		}
@@ -464,8 +607,8 @@
 		}
 
 		.swiper-pagination-bullet {
-			width: .4rem;
-			height: 8px;
+			width: 0.5rem;
+			height: 5px;
 			border-radius: 11rem;
 			opacity: 1;
 			background: #E9E9E9;
@@ -478,12 +621,12 @@
 
 		.swiper {
 			width: 7rem;
-			height: 4.5rem;
+			height: 5.2rem;
 			margin-left: .3rem;
 		}
 
 		.case_top {
-			margin: .4rem .36rem .3rem;
+			margin: .3rem .36rem;
 
 		}
 
@@ -496,13 +639,12 @@
 		.swiper-slide img {
 			display: block;
 			width: 1.7rem;
-			height: .76rem;
 			object-fit: cover;
 		}
 
 		.swiper-slide {
 			width: 6.20rem;
-			height: 4.50rem;
+			height: 5rem;
 			background: #FFFFFF;
 			box-shadow: 0px 12px 24px 1px rgba(24, 23, 23, 0.08);
 			border-radius: 10px 10px 10px 10px;
@@ -525,6 +667,7 @@
 		}
 
 		.newsInformation_cotent {
+			display: none;
 			width: 6.72rem;
 			margin: .3rem auto;
 			background: #FFFFFF;
@@ -544,10 +687,27 @@
 			color: #FFFFFF;
 			font-size: .28rem;
 			font-weight: 500;
-			/* background: url(./img/versionTheRightsInterestsContrast_top.png) rgba(30, 96, 250, 0.7); */
-			background: rgba(30, 96, 250, 0.7);
 			opacity: 1;
-			padding-left: .1rem;
+			padding-left: .3rem;
+		}
+
+		.newsInformation_top text {
+			padding: 0 .1rem;
+		}
+
+		.newsInformation_top_bg1 {
+			background: url(./img/newsInformation1.png) rgba(30, 96, 250, 0.7);
+			background-size: 100% 100%;
+		}
+
+		.newsInformation_top_bg2 {
+			background: url(./img/newsInformation2.png) rgba(30, 96, 250, 0.7);
+			background-size: 100% 100%;
+		}
+
+		.newsInformation_top_bg3 {
+			background: url(./img/newsInformation3.png) rgba(30, 96, 250, 0.7);
+			background-size: 100% 100%;
 		}
 
 		.newsInformation_top text {
@@ -556,12 +716,17 @@
 		}
 
 		.newsInformation_item {
-			line-height: .8rem;
+			line-height: 1rem;
+			height: 1rem;
 			padding: 0 0.36rem;
 		}
 
 		.newsInformation_item text {
 			color: #999FAA
+		}
+
+		.newsInformation_show {
+			display: block;
 		}
 
 		/* 立即安装 */
@@ -623,6 +788,16 @@
 			height: .24rem;
 		}
 
+		.atBottomThe_child {
+			display: none;
+		}
+
+		.atBottomThe_child a {
+			padding: .2rem .6rem;
+			color: #999FAA;
+			display: block;
+		}
+
 		.qrCode_box {
 			width: 70%;
 			margin: .4rem auto;
@@ -660,6 +835,129 @@
 			font-size: .24rem;
 			padding: .2rem 0;
 		}
+
+		.vta_kefu {
+			position: fixed;
+			top: 70%;
+			right: 0;
+			width: .86rem;
+			height: .86rem;
+			background: #FFFFFF;
+			box-shadow: 0px 2px 4px 1px rgba(60, 60, 60, 0.12);
+			border-radius: 50%;
+			opacity: 1;
+			border: 1px solid #E3E6EB;
+		}
+
+		.vta_kefu img {
+			width: .44rem;
+			height: .44rem;
+		}
+
+		.vta_kefu_popup {
+			display: none;
+			position: fixed;
+			text-align: center;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 5rem;
+			height: 8rem;
+			background: #FFFFFF;
+			box-shadow: 0px 8px 11px 1px rgba(60, 60, 60, 0.16);
+			opacity: 1;
+			z-index: 99999;
+		}
+
+		.vta_kefu_popup .author_img {
+			width: 1.36rem;
+			height: 1.36rem;
+			position: absolute;
+			top: .8rem;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.author_img img {
+			width: 100%;
+			height: 100%;
+		}
+
+		.kefu_top {
+			width: 5rem;
+			height: 1.63rem;
+			background: #2765F6;
+			opacity: 1;
+		}
+
+		.contact_qq {
+			margin-top: .8rem;
+			color: #333333;
+			line-height: .5rem;
+		}
+
+		.contact_qq img {
+			width: .38rem;
+			height: .38rem;
+		}
+
+		.qrCodeBywx {
+			margin-top: .4rem;
+		}
+
+		.qrCodeBywx img {
+			width: 2rem;
+			height: 2rem;
+
+		}
+
+		.qrCodeBywx p {
+			font-size: .26rem;
+			font-family: PingFang SC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #5C5C5C;
+			line-height: .8rem;
+		}
+
+		.kefu_popup_tips {
+			text-align: left;
+			font-size: .24rem;
+			font-family: PingFang SC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #939EA8;
+			line-height: .5rem;
+			padding-left: .5rem;
+		}
+
+		.list_item_active {
+			color: #2765F6;
+		}
+
+		.shutDownPopup {
+			position: absolute;
+			width: .88rem;
+			height: .88rem;
+			bottom: -1.2rem;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.shutDownPopup img {
+			width: 100%;
+			height: 100%;
+		}
+
+		/* 蒙层 */
+		.popup_addLayerMask {
+			display: none;
+			position: fixed;
+			top: 0;
+			width: 750px;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.7);
+			border-radius: 0px 0px 0px 0px;
+			opacity: 1;
+		}
 	</style>
 </head>
 
@@ -688,7 +986,7 @@
 					<img src="./img/demo_play.png" alt="">
 				</div>
 				<div class="top_btm">
-					<img src="./img/top_bootm.png" alt="">
+
 				</div>
 			</div>
 		</div>
@@ -704,22 +1002,59 @@
 				</div>
 			</div>
 			<div class="list_item flex flex-between">
-				<div>支持应用</div>
+				<span>支持应用</span>
 				<img src="./img/down_black.png" alt="">
-			</div>
-			<div class="list_item flex flex-between">
-				<div>支持应用</div>
-				<img src="./img/down_black.png" alt="">
-			</div>
-			<div class="list_item list_item_active flex flex-between" onclick="open_list_child()">
-				<div>支持应用</div>
-				<img src="./img/up_blue.png" alt="">
 			</div>
 			<!-- 子节点 -->
 			<div class="list_child flex flex-column">
 				<a href="#"> 企业介绍</a>
 				<a href="#"> 联系我们</a>
 				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="list_item flex flex-between">
+				<div>解决方案</div>
+				<img src="./img/down_black.png" alt="">
+			</div>
+			<!-- 子节点 -->
+			<div class="list_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="list_item flex flex-between">
+				<div>版本权益</div>
+				<img src="./img/down_black.png" alt="">
+			</div>
+			<!-- 子节点 -->
+			<div class="list_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="list_item flex flex-between">
+				<span>客户案例</span>
+				<img src=" ./img/down_black.png" alt="">
+			</div>
+			<!-- 子节点 -->
+			<div class="list_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="list_item flex flex-between">
+				<span>关于微塔</span>
+				<img src=" ./img/down_black.png" alt="">
+			</div>
+			<!-- 子节点 -->
+			<div class="list_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<!-- 操作按钮 -->
+			<div class="listPopupWindow_buttonGroup flex flex-column flex-middle">
+				<div>登录</div>
+				<div>注册</div>
 			</div>
 		</div>
 		<!-- 操作栏按钮 -->
@@ -772,7 +1107,6 @@
 				<img src="./img/down_white.png" alt="">
 			</div>
 		</div>
-
 		<!-- 解决问题 -->
 		<div class="vta_industryProblems_box">
 			<p class="vta_columnTitle">解决问题</p>
@@ -781,7 +1115,7 @@
 				<div class="industryProblems_item">
 					<div class="vta_industryProblems_temp"></div>
 					<div class="industryProblems_title flex flex-middle">
-						<img src="./img/customerService.png" alt="">
+						<img src="./img/problem1.png" alt="">
 						<div>引流获客</div>
 					</div>
 					<div class="industryProblems_tips_list flex flex-between">
@@ -817,7 +1151,7 @@
 				</div>
 				<div class="industryProblems_item">
 					<div class="industryProblems_title flex flex-middle">
-						<img src="./img/customerService.png" alt="">
+						<img src="./img/problem3.png" alt="">
 						<div>用户运营</div>
 					</div>
 					<div class="industryProblems_tips_list flex flex-between">
@@ -835,25 +1169,7 @@
 				</div>
 				<div class="industryProblems_item">
 					<div class="industryProblems_title flex flex-middle">
-						<img src="./img/customerService.png" alt="">
-						<div>用户服务</div>
-					</div>
-					<div class="industryProblems_tips_list flex flex-between">
-						<ul>
-							<li>智能用户标签</li>
-							<li>精准用户分层</li>
-							<li>群体特质洞察</li>
-						</ul>
-						<ul>
-							<li>流失用户预测</li>
-							<li>用户运营SOP</li>
-							<li>批量消息触达</li>
-						</ul>
-					</div>
-				</div>
-				<div class="industryProblems_item">
-					<div class="industryProblems_title flex flex-middle">
-						<img src="./img/customerService.png" alt="">
+						<img src="./img/problem4.png" alt="">
 						<div>营销裂变</div>
 					</div>
 					<div class="industryProblems_tips_list flex flex-between">
@@ -871,7 +1187,7 @@
 				</div>
 				<div class="industryProblems_item">
 					<div class="industryProblems_title flex flex-middle">
-						<img src="./img/customerService.png" alt="">
+						<img src="./img/problem5.png" alt="">
 						<div>数据分析</div>
 					</div>
 					<div class="industryProblems_tips_list flex flex-between">
@@ -892,118 +1208,308 @@
 
 			</div>
 		</div>
-
 		<!-- 版本对比 -->
 		<div class="vta_versionTheRightsInterestsContrast_box">
 			<p class="vta_columnTitle">版本权益对比</p>
 			<text class="vta_columnTitle_s">丰富的行业应用和完整的应用生态</text>
-			<div class="switch_btn flex flex-around">
-				<div class="swich_btn_item swich_btn_item_active">
-					免费版
-				</div>
-				<div class="swich_btn_item">
-					商业版
-				</div>
-				<div class="swich_btn_item">
-					定制版
-				</div>
-			</div>
-			<div class="versionTheRightsInterestsContrast_content">
-				<div class="versionTheRightsInterestsContrast_top flex flex-between flex-middle">
-					<div class="vrc_tip flex flex-column">
-						<text selectable="false" space="false" decode="false">
-							免费版
-						</text>
-						<text selectable="false" space="false" decode="false">
-							适合小微团队
-						</text>
-					</div>
-					<div class="vrc_price">
-						<text selectable="false" space="false" decode="false">
-							0
-						</text>
-						元/年
-					</div>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>功能完整度</div>
-					<text selectable="false" space="false" decode="false">
-						全功能
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>用户限制</div>
-					<text selectable="false" space="false" decode="false">
-						100用户以内
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>商业限制</div>
-					<text selectable="false" space="false" decode="false">
-						无
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>广告推送</div>
-					<text selectable="false" space="false" decode="false">
-						有
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>应用推送</div>
-					<text selectable="false" space="false" decode="false">
-						有
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>增强功能</div>
-					<text selectable="false" space="false" decode="false">
-						需购买
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>在线更新</div>
-					<text selectable="false" space="false" decode="false">
-						基础更新
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>服务支持</div>
-					<text selectable="false" space="false" decode="false">
-						无
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>更换授权地址</div>
-					<text selectable="false" space="false" decode="false">
-						600元/次
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>客服服务</div>
-					<text selectable="false" space="false" decode="false">
-						公共客服
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>开发定制</div>
-					<text selectable="false" space="false" decode="false">
-						无
-					</text>
-				</div>
-				<div class="vTRIContrast_item flex flex-between">
-					<div>优先解决bug</div>
-					<text selectable="false" space="false" decode="false">
-						排队处理
-					</text>
-				</div>
-				<div class="vTRIContrast_hr"></div>
-				<div class="installThe">
-					立即安装
-				</div>
-			</div>
-		</div>
+			<ul class="switch_btn flex flex-around" id="version_tabs">
+				<li class="swich_btn_item swich_btn_item_active">
+					<a href="#" title="version_tab1">免费版</a>
+				</li>
+				<li class="swich_btn_item">
+					<a href="#" title="version_tab2">商业版</a>
+				</li>
+				<li class="swich_btn_item">
+					<a href="#" title="version_tab3">定制版</a>
+				</li>
+			</ul>
+			<div id="version_content">
 
+				<div class="versionTheRightsInterestsContrast_content version_show" id="version_tab1">
+					<div class="versionTheRightsInterestsContrast_top version_bg1 flex flex-between flex-middle">
+						<div class="vrc_tip flex flex-column">
+							<text selectable="false" space="false" decode="false">
+								免费版
+							</text>
+							<text selectable="false" space="false" decode="false">
+								适合小微团队
+							</text>
+						</div>
+						<div class="vrc_price">
+							<text selectable="false" space="false" decode="false">
+								0
+							</text>
+							元/年
+						</div>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>功能完整度</div>
+						<text selectable="false" space="false" decode="false">
+							全功能
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>用户限制</div>
+						<text selectable="false" space="false" decode="false">
+							100用户以内
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>商业限制</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>广告推送</div>
+						<text selectable="false" space="false" decode="false">
+							有
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>应用推送</div>
+						<text selectable="false" space="false" decode="false">
+							有
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>增强功能</div>
+						<text selectable="false" space="false" decode="false">
+							需购买
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>在线更新</div>
+						<text selectable="false" space="false" decode="false">
+							基础更新
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>服务支持</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>更换授权地址</div>
+						<text selectable="false" space="false" decode="false">
+							600元/次
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>客服服务</div>
+						<text selectable="false" space="false" decode="false">
+							公共客服
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>开发定制</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>优先解决bug</div>
+						<text selectable="false" space="false" decode="false">
+							排队处理
+						</text>
+					</div>
+					<div class="vTRIContrast_hr"></div>
+					<div class="installThe installThe_v1">
+						立即安装
+					</div>
+				</div>
+				<div class="versionTheRightsInterestsContrast_content" id="version_tab2">
+					<div class="versionTheRightsInterestsContrast_top version_bg2 flex flex-between flex-middle">
+						<div class="vrc_tip flex flex-column">
+							<text selectable="false" space="false" decode="false">
+								商业版
+							</text>
+							<text selectable="false" space="false" decode="false">
+								适合创业团队
+							</text>
+						</div>
+						<div class="vrc_price">
+							<text selectable="false" space="false" decode="false">
+								9,999
+							</text>
+							元/年
+						</div>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>功能完整度</div>
+						<text selectable="false" space="false" decode="false">
+							全功能
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>用户限制</div>
+						<text selectable="false" space="false" decode="false">
+							100用户以内
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>商业限制</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>广告推送</div>
+						<text selectable="false" space="false" decode="false">
+							有
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>应用推送</div>
+						<text selectable="false" space="false" decode="false">
+							有
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>增强功能</div>
+						<text selectable="false" space="false" decode="false">
+							需购买
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>在线更新</div>
+						<text selectable="false" space="false" decode="false">
+							基础更新
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>服务支持</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>更换授权地址</div>
+						<text selectable="false" space="false" decode="false">
+							600元/次
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>客服服务</div>
+						<text selectable="false" space="false" decode="false">
+							公共客服
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>开发定制</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>优先解决bug</div>
+						<text selectable="false" space="false" decode="false">
+							排队处理
+						</text>
+					</div>
+					<div class="vTRIContrast_hr"></div>
+					<div class="installThe installThe_v2">
+						立即安装
+					</div>
+				</div>
+				<div class="versionTheRightsInterestsContrast_content" id="version_tab3">
+					<div class="versionTheRightsInterestsContrast_top version_bg3 flex flex-between flex-middle">
+						<div class="vrc_tip flex flex-column">
+							<text selectable="false" space="false" decode="false">
+								定制版
+							</text>
+							<text selectable="false" space="false" decode="false">
+								适合中大型企业
+							</text>
+						</div>
+						<div class="vrc_price">
+							<!-- <text selectable="false" space="false" decode="false">
+								0
+							</text> -->
+							按需求报价
+						</div>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>功能完整度</div>
+						<text selectable="false" space="false" decode="false">
+							全功能
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>用户限制</div>
+						<text selectable="false" space="false" decode="false">
+							100用户以内
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>商业限制</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>广告推送</div>
+						<text selectable="false" space="false" decode="false">
+							有
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>应用推送</div>
+						<text selectable="false" space="false" decode="false">
+							有
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>增强功能</div>
+						<text selectable="false" space="false" decode="false">
+							需购买
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>在线更新</div>
+						<text selectable="false" space="false" decode="false">
+							基础更新
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>服务支持</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>更换授权地址</div>
+						<text selectable="false" space="false" decode="false">
+							600元/次
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>客服服务</div>
+						<text selectable="false" space="false" decode="false">
+							公共客服
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>开发定制</div>
+						<text class="version_color_no" selectable="false" space="false" decode="false">
+							无
+						</text>
+					</div>
+					<div class="vTRIContrast_item flex flex-between">
+						<div>优先解决bug</div>
+						<text selectable="false" space="false" decode="false">
+							排队处理
+						</text>
+					</div>
+					<div class="vTRIContrast_hr"></div>
+					<div class="installThe installThe_v3">
+						立即安装
+					</div>
+				</div>
+			</div>
+
+		</div>
 		<!-- TA们都在用微塔 -->
 		<div class="vta_case_box">
 			<p class="vta_columnTitle">TA们都在用微塔</p>
@@ -1061,64 +1567,117 @@
 				<div class="swiper-pagination"></div>
 			</div>
 		</div>
-
-		<!-- 新闻资讯 -->
+		<!-- 精品应用 -->
 		<div class="vta_newsInformation_box">
 			<p class="vta_columnTitle newsTitle">新闻资讯</p>
-			<div class="switch_btn flex flex-around">
-				<div class="swich_btn_item swich_btn_item_active">
-					微塔动态
+			<ul class="switch_btn flex flex-around" id="newsInformation_tabs">
+				<li class="swich_btn_item swich_btn_item_active">
+					<a href="#" title="news_tab1">微塔动态</a>
+				</li>
+				<li class="swich_btn_item">
+					<a href="#" title="news_tab2">行业动态</a>
+				</li>
+				<li class="swich_btn_item">
+					<a href="#" title="news_tab3">最新活动</a>
+				</li>
+			</ul>
+			<div id="newsInformation_content">
+				<div class="newsInformation_cotent newsInformation_show" id="news_tab1">
+					<div class="newsInformation_top newsInformation_top_bg1">
+						微塔动态<text>I 智慧商业服务商</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户但是撒多撒多大萨达撒大声地达1.5亿</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">生意爆满！教程流出</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">微塔CEO：经营私域经济</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">微塔COO浣昉 ：四大核心</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">微塔CEO：经营私域经济</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
 				</div>
-				<div class="swich_btn_item">
-					行业动态
+				<div class="newsInformation_cotent" id="news_tab2">
+					<div class="newsInformation_top newsInformation_top_bg2">
+						行业动态<text>I 智慧商业服务商</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
 				</div>
-				<div class="swich_btn_item">
-					最新活动
+				<div class="newsInformation_cotent" id="news_tab3">
+					<div class="newsInformation_top newsInformation_top_bg3">
+						最新活动<text>I 智慧商业服务商</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
+					<div class="newsInformation_item flex flex-between">
+						<div class="text-more">鞋服商家私域用户达1.5亿...</div>
+						<text selectable="false" space="false" decode="false">
+							01-17
+						</text>
+					</div>
 				</div>
 			</div>
-			<div class="newsInformation_cotent">
-				<div class="newsInformation_top">
-					微塔动态<text>I 智慧商业服务商</text>
-				</div>
-				<div class="newsInformation_item flex flex-between">
-					<div>鞋服商家私域用户达1.5亿...</div>
-					<text selectable="false" space="false" decode="false">
-						01-17
-					</text>
-				</div>
-				<div class="newsInformation_item flex flex-between">
-					<div>鞋服商家私域用户达1.5亿...</div>
-					<text selectable="false" space="false" decode="false">
-						01-17
-					</text>
-				</div>
-				<div class="newsInformation_item flex flex-between">
-					<div>鞋服商家私域用户达1.5亿...</div>
-					<text selectable="false" space="false" decode="false">
-						01-17
-					</text>
-				</div>
-				<div class="newsInformation_item flex flex-between">
-					<div>鞋服商家私域用户达1.5亿...</div>
-					<text selectable="false" space="false" decode="false">
-						01-17
-					</text>
-				</div>
-				<div class="newsInformation_item flex flex-between">
-					<div>鞋服商家私域用户达1.5亿...</div>
-					<text selectable="false" space="false" decode="false">
-						01-17
-					</text>
-				</div>
-				<div class="newsInformation_item flex flex-between">
-					<div>鞋服商家私域用户达1.5亿...</div>
-					<text selectable="false" space="false" decode="false">
-						01-17
-					</text>
-				</div>
-			</div>
-		</div>
 
+		</div>
 		<!-- 立即安装微塔 -->
 		<div class="vta_installNow_box">
 			<div class="vta_installNow_top">
@@ -1134,21 +1693,45 @@
 		</div>
 		<!-- 顶部介绍 -->
 		<div class="vta_atBottomThe">
-			<div class="atBottomThe_item flex flex-between flex-middle">
+			<div class="atBottomThe_item flex flex-between flex-middle" data-index="0">
 				<div>产品服务</div>
 				<img src="./img/down.png" alt="">
 			</div>
-			<div class="atBottomThe_item flex flex-between flex-middle">
+			<!-- 子节点 -->
+			<div class="atBottomThe_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="atBottomThe_item flex flex-between flex-middle" data-index="1">
 				<div>帮助中心</div>
 				<img src="./img/down.png" alt="">
 			</div>
-			<div class="atBottomThe_item flex flex-between flex-middle">
+			<!-- 子节点 -->
+			<div class="atBottomThe_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="atBottomThe_item flex flex-between flex-middle" data-index="2">
 				<div>联系微塔</div>
 				<img src="./img/down.png" alt="">
 			</div>
-			<div class="atBottomThe_item flex flex-between flex-middle">
+			<!-- 子节点 -->
+			<div class="atBottomThe_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+			<div class="atBottomThe_item flex flex-between flex-middle" data-index="3">
 				<div>关于我们</div>
 				<img src="./img/down.png" alt="">
+			</div>
+			<!-- 子节点 -->
+			<div class="atBottomThe_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
 			</div>
 			<div class="qrCode_box flex flex-between">
 				<div class="flex flex-column flex-middle">
@@ -1174,6 +1757,43 @@
 				<p>友情链接：阿里云服务器 腾讯超级服务器 微盟</p>
 				<p>© 2021 Yusur Tech. All Rights Reserved. 京ICP备18041345号</p>
 			</div>
+		</div>
+		<!-- 客服图标 -->
+		<div class="vta_kefu flex flex-center flex-middle">
+			<img src="./img/kefu.png" alt="">
+		</div>
+		<!-- 客服弹窗 -->
+		<div class="vta_kefu_popup">
+			<div class="kefu_top">
+				<div class="author_img">
+					<img src="./img/author_img.png" alt="">
+				</div>
+			</div>
+			<div class="contact_qq">
+				<div class="flex flex-middle flex-center">
+					<img src="./img/qq.png" alt="">
+					<span>售前QQ：5192384</span>
+				</div>
+				<div class="flex flex-middle flex-center">
+					<img src="./img/qq.png" alt="">
+					<span>售后QQ：8237420</span>
+				</div>
+			</div>
+			<div class="qrCodeBywx">
+				<img src="./img/qrCodeBywx.png" alt="">
+				<p>微信扫码联系客服</p>
+			</div>
+			<div class="kefu_popup_tips">
+				<p>周一至周六：8:30-22:00</p>
+				<p>非工作时间请QQ留言，我们会及时回复</p>
+			</div>
+			<div class="shutDownPopup">
+				<img src="./img/shutDownPopup.png" alt="">
+			</div>
+		</div>
+		<!-- 蒙层 -->
+		<div class="popup_addLayerMask">
+
 		</div>
 	</div>
 </body>
