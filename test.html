@@ -11,7 +11,7 @@
 	<script src="./js/rem.min.js"></script>
 	<!-- Swiper JS -->
 	<script src="./js/swiper.min.js"></script>
-
+	<script src="./js/jquery-3.6.0.min.js"></script>
 	<script>
 		new Rem({
 			desinWidth: 750, //750这个值，根据设计师的psd宽度来修改，是多少就写多少，插件默认750 
@@ -24,7 +24,16 @@
 				paginationClickable: true,
 				spaceBetween: 30
 			});
+			console.log($, '----------------  ----------------Tom');
+		}
 
+		function open_list() {
+			// $(".vta_listPopupWindow").show();
+			$(".vta_listPopupWindow").toggle();
+		}
+		function open_list_child() {
+			// $(".vta_listPopupWindow").show();
+			$(this).next('div').slideToggle();
 		}
 	</script>
 	<style>
@@ -46,6 +55,42 @@
 			overflow: hidden;
 			margin: 0 auto;
 			font-size: .26rem;
+		}
+
+		/* 列表弹窗 */
+		.vta_listPopupWindow {
+			display: none;
+			position: fixed;
+			top: 0;
+			width: 7.5rem;
+			background: #FFFFFF;
+			font-size: .3rem;
+			z-index: 999;
+		}
+
+		.list_item {
+			padding: .3rem .4rem;
+
+		}
+
+		.list_item_active {
+			color: #2765F6;
+		}
+
+		.list_child {
+			color: #333333;
+			display: none;
+		}
+
+		.list_child a {
+			padding: .2rem .6rem;
+			color: #333333;
+
+		}
+
+		.list_item img {
+			width: .24rem;
+			height: .24rem;
 		}
 
 		.vta_columnTitle {
@@ -627,7 +672,7 @@
 				</div>
 				<div class="top_right flex flex-between flex-middle">
 					<img src="./img/user_btn.png" alt="">
-					<img src="./img/operation_btn.png" alt="">
+					<img src="./img/operation_btn.png" alt="" onclick="open_list()">
 				</div>
 			</div>
 			<div class="middle_box flex flex-column flex-middle">
@@ -646,8 +691,38 @@
 					<img src="./img/top_bootm.png" alt="">
 				</div>
 			</div>
-
 		</div>
+		<!-- 列表弹窗 -->
+		<div class="vta_listPopupWindow">
+			<div class="operation flex flex-between flex-middle">
+				<div class="top_logo">
+					<img src="./img/vta_logo.png" alt="">
+				</div>
+				<div class="top_right flex flex-between flex-middle">
+					<img src="./img/user_btn.png" alt="">
+					<img src="./img/vta_close.png" alt="" onclick="open_list()">
+				</div>
+			</div>
+			<div class="list_item flex flex-between">
+				<div>支持应用</div>
+				<img src="./img/down_black.png" alt="">
+			</div>
+			<div class="list_item flex flex-between">
+				<div>支持应用</div>
+				<img src="./img/down_black.png" alt="">
+			</div>
+			<div class="list_item list_item_active flex flex-between" onclick="open_list_child()">
+				<div>支持应用</div>
+				<img src="./img/up_blue.png" alt="">
+			</div>
+			<!-- 子节点 -->
+			<div class="list_child flex flex-column">
+				<a href="#"> 企业介绍</a>
+				<a href="#"> 联系我们</a>
+				<a href="#"> 微塔研究院</a>
+			</div>
+		</div>
+		<!-- 操作栏按钮 -->
 		<div class="vta_operation_btn flex flex-around">
 			<div class="operation_item flex flex-column flex-center flex-middle">
 				<img src="./img/system.png" alt="">
